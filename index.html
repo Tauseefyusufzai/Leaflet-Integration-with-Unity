@@ -17,7 +17,9 @@
   <body>
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+
       <div id="map" style="width: 100%; height: 400px; margin-top: 20px;"></div>
+
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -132,14 +134,19 @@
       
 
     </script>
+
+
+
+
     <div id="map"></div>
 
     <script>
       // Leaflet Map
       var map = L.map('map').setView([28.616229419075502, 77.39087446456918], 5); // Delhi
     
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(map);
     
       // Handle map click
