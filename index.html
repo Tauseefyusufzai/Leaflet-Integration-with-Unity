@@ -128,27 +128,37 @@
       
 
     </script>
+    <div id="map"></div>
+
     <script>
-      var map = L.map('map').setView([28.616229419075502, 77.39087446456918], 13); // Default location (e.g., New Delhi)
+      // Leaflet Map
+      var map = L.map('map').setView([28.616229419075502, 77.39087446456918], 5); // Delhi
     
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
+        maxZoom: 18,
       }).addTo(map);
     
-      var marker = L.marker([28.616229419075502, 77.39087446456918]).addTo(map)
-        .bindPopup('Default Location')
-        .openPopup();
+      // Handle map click
+      map.on('click', function (e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+        var coordinates = lat + "," + lng;
+        console.log("Sending to Unity: " + coordinates);
     
-      // JS function callable from Unity
-      function ShowLocationOnMap(lat, lng) {
-        var latNum = parseFloat(lat);
-        var lngNum = parseFloat(lng);
-        map.setView([latNum, lngNum], 13);
-        marker.setLatLng([latNum, lngNum]);
-        marker.bindPopup("Unity sent: " + lat + ", " + lng).openPopup();
-      }
+        // Send message to Unity
+        unityInstance.SendMessage('Cube', 'MoveObjectTo', coordinates);
+      });
     </script>
+    <script>
+      // Function to show location on map
+      function ShowLocationOnMap(lat, lng) {
+        console.log("ShowLocationOnMap called with: " + lat + ", " + lng);
+        map.setView([lat, lng], 13);
+        L.marker([lat, lng]).addTo(map)
+          .bindPopup('Location from Unity')
+          .openPopup();
+      }
+    </script>    
     <script>
       // Example of calling the ShowLocationOnMap function from Unity
       // This should be replaced with actual Unity calls
